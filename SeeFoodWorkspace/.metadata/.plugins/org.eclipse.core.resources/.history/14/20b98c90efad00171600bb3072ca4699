@@ -1,0 +1,97 @@
+import java.io.File;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
+
+/**
+ * This is the license header. All code is IP of SeeFood Inc.
+ */
+
+/**
+ * @author Jake Florentine
+ *
+ */
+public class SeeFood {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		//call a system start
+		Display display = new Display();
+
+        Shell shell = new Shell(display);
+
+        // the layout manager handle the layout
+        // of the widgets in the container
+        shell.setLayout(new FillLayout());
+
+        /**
+         * This is where I think we will want to call a class to build the UI
+         * NOTE: remember to dispose widgets to prevent errors
+         */
+        Composite c = new Composite(shell, SWT.None);
+        c.setLayout(new GridLayout(1, false));
+        c.setBackground(new Color(display, 255, 252, 155));
+        
+        //Composite should be a "drop target"
+        
+        Composite ci = new Composite(c, SWT.None);
+        ci.setLayout(new GridLayout());
+        ci.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+        Button b = new Button(ci, SWT.NONE);
+        b.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
+        
+        b.addSelectionListener(new SelectionAdapter() {
+        	
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String[] filterExtensions = {".png", ".jpg", ".jpeg"};
+				
+				FileDialog fd = new FileDialog(Display.getCurrent().getActiveShell(), SWT.APPLICATION_MODAL | SWT.MULTI);
+				//fd.setFilterExtensions(filterExtensions);
+				fd.setText("Select a photo");
+				fd.open();
+				String[] files = fd.getFileNames();
+				String parentPath = fd.getFilterPath();
+				try {
+					Image i = new Image(display, parentPath+fd.getFileName());
+				}
+				catch(Exception e1) {
+					System.out.println("Cannot create image");
+				}
+				//b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
+				
+				for(String s : files) {
+					System.out.println(s);
+					
+					//ci.setBackgroundImage(new Image(ci.getDisplay(), s));
+				}
+				
+			}
+        	
+        });
+        
+        shell.open();
+        while (!shell.isDisposed()) {
+            if (!display.readAndDispatch()) {
+                display.sleep();
+            }
+        }
+        display.dispose();
+		
+	}
+
+}
