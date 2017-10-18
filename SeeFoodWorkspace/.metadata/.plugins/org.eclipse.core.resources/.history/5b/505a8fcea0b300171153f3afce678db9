@@ -1,0 +1,18 @@
+package view;
+
+import org.eclipse.swt.widgets.Composite;
+
+public class ViewUtil {
+
+	public static void launchHomeView(Composite parent, int style) {
+		HomeView h = new HomeView(parent, style);
+	}
+	public static void launchGallery(Composite parent, int style) {
+		GalleryView g = new GalleryView(parent, style);
+	}
+	public static void launchUploadView(Composite parent, int style) {
+		UploadImageView uploadImageView = new UploadImageView(parent, style);
+	}
+	
+	
+}
