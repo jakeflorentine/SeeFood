@@ -1,0 +1,16 @@
+package view;
+
+import org.eclipse.swt.widgets.Composite;
+
+public class SeefoodView extends Composite{
+
+	public SeefoodView(Composite parent, int style) {
+		super(parent, style);
+		// TODO Auto-generated constructor stub
+	}
+	
+	public void createContent(Composite parent, int style) {
+		
+	}
+
+}

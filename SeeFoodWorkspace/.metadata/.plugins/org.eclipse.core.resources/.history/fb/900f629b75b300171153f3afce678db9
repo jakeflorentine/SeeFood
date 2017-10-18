@@ -1,0 +1,16 @@
+package view;
+
+import org.eclipse.swt.widgets.Composite;
+
+public class ViewCommon extends Composite {
+
+	public ViewCommon(Composite parent, int style) {
+		super(parent, style);
+		// TODO Auto-generated constructor stub
+	}
+	
+	public void createComposite() {
+		
+	}
+
+}

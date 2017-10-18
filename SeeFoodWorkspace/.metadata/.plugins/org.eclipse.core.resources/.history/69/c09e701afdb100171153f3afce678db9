@@ -1,0 +1,10 @@
+package view;
+
+import org.eclipse.swt.widgets.Composite;
+
+public class HomeView extends Composite{
+
+	public HomeView(Composite parent, int style) {
+		super(parent, style);
+	}
+}

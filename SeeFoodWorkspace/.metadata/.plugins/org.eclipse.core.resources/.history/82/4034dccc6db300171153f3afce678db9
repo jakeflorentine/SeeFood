@@ -1,0 +1,12 @@
+package view;
+
+import org.eclipse.swt.widgets.Composite;
+
+public class GalleryView extends Composite{
+
+	public GalleryView(Composite parent, int style) {
+		super(parent, style);
+		// TODO Auto-generated constructor stub
+	}
+
+}
