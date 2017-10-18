@@ -37,6 +37,10 @@ public class HomeView extends Composite {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				/**
+				 * Selection of upload from the home view should launch the file dialog, then
+				 * proceed to the UploadImageView
+				 */
 
 				FileDialog fd = new FileDialog(Display.getCurrent().getActiveShell(),
 						SWT.APPLICATION_MODAL | SWT.MULTI);
@@ -76,7 +80,8 @@ public class HomeView extends Composite {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
+				// launch the gallery view
+				openGallery();
 			}
 
 		});
@@ -86,6 +91,6 @@ public class HomeView extends Composite {
 	public void openGallery() {
 		Composite mainComposite = this.getParent();
 		this.dispose();
-		ViewUtil.launchGallery(mainComposite, SWT.NONE);
+		ViewUtil.launchGallery(mainComposite, SWT.BORDER);
 	}
 }
