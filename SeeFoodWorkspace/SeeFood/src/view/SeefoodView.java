@@ -42,14 +42,12 @@ public class SeefoodView {
 		t.setText("SeeFood");
 		t.setFont(new Font(display, "Arial", 28, SWT.BOLD));
 
-		// HomeView h = new HomeView(c, SWT.NONE);
-		// h.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
-
-		// GalleryView h = new GalleryView(c, SWT.NONE);
-		// h.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
-
-		UploadImageView uiv = new UploadImageView(c, SWT.NONE);
-		uiv.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
+		// fill the content area with the HomeView
+		/**
+		 * Can probably be replaced with ViewUtil.launchHomeView();
+		 */
+		HomeView h = new HomeView(c, SWT.NONE);
+		h.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
 
 		shell.open();
 		while (!shell.isDisposed()) {
@@ -60,5 +58,4 @@ public class SeefoodView {
 		display.dispose();
 
 	}
-
 }

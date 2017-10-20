@@ -1,6 +1,8 @@
 package view;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 public class ViewUtil {
@@ -14,6 +16,8 @@ public class ViewUtil {
 	 */
 	public static void launchHomeView(Composite parent, int style) {
 		HomeView homeView = new HomeView(parent, style);
+		homeView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
+		parent.layout();
 		// disposePriorView(homeView);
 	}
 
@@ -24,6 +28,8 @@ public class ViewUtil {
 	 */
 	public static void launchGallery(Composite parent, int style) {
 		GalleryView galleryView = new GalleryView(parent, style);
+		galleryView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
+		parent.layout();
 		// disposePriorView(galleryView);
 	}
 
@@ -34,6 +40,8 @@ public class ViewUtil {
 	 */
 	public static void launchUploadView(Composite parent, int style) {
 		UploadImageView uploadImageView = new UploadImageView(parent, style);
+		uploadImageView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
+		parent.layout();
 		// disposePriorView(uploadImageView);
 	}
 

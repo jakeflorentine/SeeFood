@@ -34,8 +34,11 @@ public class UploadImageView extends Composite {
 	public void createContent(Composite parent, int style) {
 		// this should only appear if there is more than 1 uploaded image
 		// TODO design this
-		ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.BORDER);
+		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.BORDER);
 		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 2));
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
+		sc.setMinSize(250, 250);
 
 		Composite imageComp = new Composite(parent, SWT.BORDER);
 		imageComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 2));
@@ -86,11 +89,35 @@ public class UploadImageView extends Composite {
 			}
 
 		});
-
 		Button gallery = new Button(btnComp, SWT.FLAT | SWT.CENTER);
 		gallery.setText("Gallery");
 		gallery.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1));
+		gallery.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// launch the gallery
+				openGallery();
+			}
+		});
 
+	}
+
+	public void openUploadView() {
+		Composite mainComposite = this.getParent();
+		this.dispose();
+		ViewUtil.launchUploadView(mainComposite, SWT.BORDER);
+	}
+
+	public void openHome() {
+		Composite mainComposite = this.getParent();
+		this.dispose();
+		ViewUtil.launchHomeView(mainComposite, SWT.BORDER);
+	}
+
+	public void openGallery() {
+		Composite mainComposite = this.getParent();
+		this.dispose();
+		ViewUtil.launchGallery(mainComposite, SWT.BORDER);
 	}
 
 }

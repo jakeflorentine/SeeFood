@@ -3,16 +3,12 @@ package view;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
-
-import util.ImageUtil;
 
 public class HomeView extends Composite {
 
@@ -49,25 +45,25 @@ public class HomeView extends Composite {
 				fd.open();
 				String[] files = fd.getFileNames();
 				String parentPath = fd.getFilterPath();
-				try {
-					String si = parentPath + fd.getFileName();
-					System.out.println(si);
-					Image i = new Image(Display.getCurrent(), parentPath + "/" + fd.getFileName());
-					Image scaled = ImageUtil.resize(i, ci.getBounds());
-
-					// set the composite background to be the scaled image
-					ci.setBackgroundImage(scaled);
-				} catch (Exception e1) {
-					System.out.println("Cannot create image");
-					ci.setBackground(new Color(Display.getCurrent(), 255, 0, 0));
-				}
-				// b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
+				// try {
+				// String si = parentPath + fd.getFileName();
+				// System.out.println(si);
+				// Image i = new Image(Display.getCurrent(), parentPath + "/" +
+				// fd.getFileName());
+				// Image scaled = ImageUtil.resize(i, ci.getBounds());
+				//
+				// // set the composite background to be the scaled image
+				// ci.setBackgroundImage(scaled);
+				// } catch (Exception e1) {
+				// System.out.println("Cannot create image");
+				// ci.setBackground(new Color(Display.getCurrent(), 255, 0, 0));
+				// }
 
 				for (String s : files) {
 					System.out.println(s);
-
-					// ci.setBackgroundImage(new Image(ci.getDisplay(), s));
 				}
+
+				openUploadView();
 
 			}
 
@@ -86,6 +82,18 @@ public class HomeView extends Composite {
 
 		});
 
+	}
+
+	public void openUploadView() {
+		Composite mainComposite = this.getParent();
+		this.dispose();
+		ViewUtil.launchUploadView(mainComposite, SWT.BORDER);
+	}
+
+	public void openHome() {
+		Composite mainComposite = this.getParent();
+		this.dispose();
+		ViewUtil.launchHomeView(mainComposite, SWT.BORDER);
 	}
 
 	public void openGallery() {
