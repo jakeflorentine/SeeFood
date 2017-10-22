@@ -8,6 +8,9 @@ import org.eclipse.swt.widgets.Composite;
 public class ViewUtil {
 	private static Composite openView = null;
 	private static StackLayout layout = new StackLayout();
+	private static GalleryView galleryView;
+	private static HomeView homeView;
+	private static UploadImageView uploadImageView;
 
 	/**
 	 * 
@@ -15,7 +18,7 @@ public class ViewUtil {
 	 * @param style
 	 */
 	public static void launchHomeView(Composite parent, int style) {
-		HomeView homeView = new HomeView(parent, style);
+		homeView = new HomeView(parent, style);
 		homeView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
 		parent.layout();
 		// disposePriorView(homeView);
@@ -27,7 +30,7 @@ public class ViewUtil {
 	 * @param style
 	 */
 	public static void launchGallery(Composite parent, int style) {
-		GalleryView galleryView = new GalleryView(parent, style);
+		galleryView = new GalleryView(parent, style);
 		galleryView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
 		parent.layout();
 		// disposePriorView(galleryView);
@@ -38,11 +41,24 @@ public class ViewUtil {
 	 * @param parent
 	 * @param style
 	 */
-	public static void launchUploadView(Composite parent, int style) {
-		UploadImageView uploadImageView = new UploadImageView(parent, style);
+	public static void launchUploadView(Composite parent, int style, String parentFilePath, String[] files) {
+		uploadImageView = new UploadImageView(parent, style);
 		uploadImageView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
 		parent.layout();
+
+		uploadImages(parentFilePath, files);
 		// disposePriorView(uploadImageView);
+	}
+
+	/**
+	 * 
+	 * @param parentFilePath
+	 * @param files
+	 */
+	public static void uploadImages(String parentFilePath, String[] files) {
+		if (parentFilePath != null && files != null) {
+			uploadImageView.displayImages(parentFilePath, files);
+		}
 	}
 
 	/**

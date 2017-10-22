@@ -7,6 +7,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
@@ -52,18 +54,25 @@ public class GalleryView extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// open file dialog
+				FileDialog fd = new FileDialog(Display.getCurrent().getActiveShell(),
+						SWT.APPLICATION_MODAL | SWT.MULTI);
+				fd.setText("Select a photo");
+				fd.open();
+
 				// get the files
-				// launch the upload view
-				openUploadView();
+				String[] files = fd.getFileNames();
+				String parentPath = fd.getFilterPath();
+
+				openUploadView(parentPath, files);
 			}
 
 		});
 	}
 
-	public void openUploadView() {
+	public void openUploadView(String parentFilePath, String[] files) {
 		Composite mainComposite = this.getParent();
 		this.dispose();
-		ViewUtil.launchUploadView(mainComposite, SWT.BORDER);
+		ViewUtil.launchUploadView(mainComposite, SWT.BORDER, parentFilePath, files);
 	}
 
 	public void openHome() {

@@ -23,7 +23,7 @@ public class HomeView extends Composite {
 
 	public void createContent(Composite parent, int style) {
 
-		Composite ci = new Composite(parent, SWT.BORDER);
+		Composite ci = new Composite(parent, SWT.BORDER | SWT.NO_BACKGROUND);
 		ci.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
 
 		Button upload = new Button(parent, SWT.FLAT);
@@ -45,25 +45,8 @@ public class HomeView extends Composite {
 				fd.open();
 				String[] files = fd.getFileNames();
 				String parentPath = fd.getFilterPath();
-				// try {
-				// String si = parentPath + fd.getFileName();
-				// System.out.println(si);
-				// Image i = new Image(Display.getCurrent(), parentPath + "/" +
-				// fd.getFileName());
-				// Image scaled = ImageUtil.resize(i, ci.getBounds());
-				//
-				// // set the composite background to be the scaled image
-				// ci.setBackgroundImage(scaled);
-				// } catch (Exception e1) {
-				// System.out.println("Cannot create image");
-				// ci.setBackground(new Color(Display.getCurrent(), 255, 0, 0));
-				// }
 
-				for (String s : files) {
-					System.out.println(s);
-				}
-
-				openUploadView();
+				openUploadView(parentPath, files);
 
 			}
 
@@ -84,10 +67,10 @@ public class HomeView extends Composite {
 
 	}
 
-	public void openUploadView() {
+	public void openUploadView(String parentFilePath, String[] files) {
 		Composite mainComposite = this.getParent();
 		this.dispose();
-		ViewUtil.launchUploadView(mainComposite, SWT.BORDER);
+		ViewUtil.launchUploadView(mainComposite, SWT.BORDER, parentFilePath, files);
 	}
 
 	public void openHome() {
