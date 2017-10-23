@@ -1,0 +1,10 @@
+package custom.widgets;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Widget;
+
+public class ConfidenceMeter {
+
+	
+	
+}
