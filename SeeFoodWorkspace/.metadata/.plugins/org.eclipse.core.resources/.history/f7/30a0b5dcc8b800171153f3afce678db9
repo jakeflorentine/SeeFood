@@ -14,11 +14,10 @@ public class SeeFood {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		loadSwtJar();
 		SeefoodView.createContent();
 	}
 
-	private static void loadSwtJar() {
+	private void loadSwtJar() {
 		String osName = System.getProperty("os.name").toLowerCase();
 		String osArch = System.getProperty("os.arch").toLowerCase();
 		String swtFileNameOsPart = osName.contains("win") ? "win32"
