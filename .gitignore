@@ -1,7 +1,16 @@
 # ignore everything
 *
 # whitelist anything that's a directory
-!*/SeeFood/
+!SeeFood/
+!SeeFood/*/
+!SeeFood/*/src/
+!SeeFood/*/src/*/
+!SeeFood/*/src/*/util/
+!SeeFood/*/src/*/view/
+!SeeFood/*/src/*/custom/
+!SeeFood/*/src/*/custom/*/
+!SeeFood/*/src/*/custom/*/objects/
+!SeeFood/*/src/*/custom/*/widgets/
 # whitelist the following file types
 !*.java
 !*.png
