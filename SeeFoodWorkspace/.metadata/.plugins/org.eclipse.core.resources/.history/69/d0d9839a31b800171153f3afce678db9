@@ -29,6 +29,10 @@ public class ConfidenceMeter extends Canvas {
 		int correctWidth = (int) (width * confidencePct);
 		int incorrectWidth = width - correctWidth;
 
+		// create both rectangles
+		// correct = new Rectangle(this.getBounds().x, this.getBounds().y, correctWidth,
+		// 20);
+
 	}
 
 }
