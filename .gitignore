@@ -1,0 +1,7 @@
+# ignore everything
+*
+# whitelist anything that's a directory
+!*/
+# whitelist the following file types
+!*.java
+!*.png
