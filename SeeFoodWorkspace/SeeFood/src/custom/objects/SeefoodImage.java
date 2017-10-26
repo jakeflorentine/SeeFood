@@ -11,19 +11,19 @@ public class SeefoodImage {
 		this.originalImage = image;
 	}
 
-	public void SetConfidence(double confidence) {
+	public void setConfidence(double confidence) {
 		this.confidenceLevel = confidence;
 	}
 
-	public double GetConfidence() {
+	public double getConfidence() {
 		return this.confidenceLevel;
 	}
 
-	public void SetImage(Image image) {
+	public void setImage(Image image) {
 		this.originalImage = image;
 	}
 
-	public Image GetImage() {
+	public Image getImage() {
 		return this.originalImage;
 	}
 }
