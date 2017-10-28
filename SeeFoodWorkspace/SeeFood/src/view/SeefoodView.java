@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import util.WebServiceUtil;
+
 public class SeefoodView {
 
 	public SeefoodView() {
@@ -50,6 +52,10 @@ public class SeefoodView {
 		h.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
 
 		shell.open();
+
+		// establish a connection to the ec2 after the view is created
+		WebServiceUtil.connectToServer();
+
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();

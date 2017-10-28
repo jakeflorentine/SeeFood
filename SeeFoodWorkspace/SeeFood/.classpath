@@ -3,5 +3,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
+	<classpathentry kind="lib" path="lib/swt_linux_gtk_x64.jar"/>
+	<classpathentry kind="lib" path="lib/swt_macosx_x64.jar"/>
+	<classpathentry kind="lib" path="lib/swt_win32_x64.jar"/>
+	<classpathentry kind="lib" path="lib/swt_win32_x86.jar"/>
+	<classpathentry kind="lib" path="/Users/jakeflorentine/git/SeeFood/SeeFoodWorkspace/SeeFood/lib/jsch-0.1.54.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
