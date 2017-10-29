@@ -1,9 +1,14 @@
 package util;
 
+import java.util.List;
+
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
+import custom.objects.SeefoodImage;
+
 public class WebServiceUtil {
+	private static Session session;
 
 	public static boolean connectToServer() {
 		try {
@@ -17,7 +22,7 @@ public class WebServiceUtil {
 			jsch.addIdentity(privateKey);
 			System.out.println("identity added ");
 
-			Session session = jsch.getSession(user, host, port);
+			session = jsch.getSession(user, host, port);
 			System.out.println("session created.");
 
 			// disabling StrictHostKeyChecking may help to make connection but makes it
@@ -41,5 +46,15 @@ public class WebServiceUtil {
 			System.out.println(e);
 			return false;
 		}
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public List<SeefoodImage> getImages() {
+		List<SeefoodImage> images = null;
+
+		return images;
 	}
 }
