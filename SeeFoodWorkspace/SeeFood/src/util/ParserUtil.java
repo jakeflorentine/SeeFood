@@ -25,7 +25,7 @@ public class ParserUtil {
 	}
 
 	private static boolean isValid(String filename) {
-		List<String> filetypes = new ArrayList<>(Arrays.asList("xyz", "abc"));
+		List<String> filetypes = new ArrayList<>(Arrays.asList("jpg", "jpeg", "bmp", "png"));
 		String extension = filename.substring(filename.lastIndexOf('.'));
 		return filetypes.contains(extension.toLowerCase());
 //		try {
