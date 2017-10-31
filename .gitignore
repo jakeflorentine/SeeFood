@@ -1,7 +1,6 @@
 # ignore everything
 *
 # whitelist anything that's a directory
-
 !SeeFood/
 !SeeFood/*/
 !SeeFood/*/src/

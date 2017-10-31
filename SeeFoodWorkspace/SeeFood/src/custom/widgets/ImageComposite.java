@@ -18,8 +18,6 @@ public class ImageComposite extends Composite {
 	public ImageComposite(Composite parent, int style, SeefoodImage seefoodImage) {
 		super(parent, style);
 		GridLayout gl = new GridLayout(3, true);
-		gl.marginWidth = 50;
-		gl.marginHeight = 25;
 		this.setLayout(gl);
 
 		setSeefoodImage(seefoodImage);

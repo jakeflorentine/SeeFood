@@ -1,8 +1,10 @@
 package view;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -13,6 +15,8 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 public class GalleryView extends Composite {
+	// scrolled composite to be filled with seefood images
+	private ScrolledComposite photoGrid;
 
 	public GalleryView(Composite parent, int style) {
 		super(parent, style);
@@ -40,6 +44,26 @@ public class GalleryView extends Composite {
 
 		TabItem notFood = new TabItem(filter, SWT.NONE);
 		notFood.setText("Not Food");
+
+		filter.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (photoGrid != null) {
+					photoGrid.dispose();
+				}
+
+				photoGrid = new ScrolledComposite(filter, SWT.NONE);
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				photoGrid = new ScrolledComposite(filter, SWT.NONE);
+
+			}
+
+		});
 
 		/**
 		 * Each tab should be filled with a scrolled composite which will contain a 3xn

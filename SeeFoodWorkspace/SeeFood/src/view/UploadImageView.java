@@ -105,7 +105,7 @@ public class UploadImageView extends Composite {
 				String fullFilePath = parentFilePath + "/" + file;
 				// need to check if fullFilePath is an image
 
-				Image i = new Image(Display.getCurrent(), parentFilePath + "/" + file);
+				Image i = new Image(Display.getCurrent(), fullFilePath);
 				validImages.add(i);
 				// Image scaled = ImageUtil.resize(i, imageComp.getBounds());
 				// // set the composite background to be the scaled image
