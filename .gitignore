@@ -1,7 +1,7 @@
 # ignore everything
 *
 # whitelist anything that's a directory
-*/SeeFoodWorkspace/org.eclipse.swt/
+
 !SeeFood/
 !SeeFood/*/
 !SeeFood/*/src/
