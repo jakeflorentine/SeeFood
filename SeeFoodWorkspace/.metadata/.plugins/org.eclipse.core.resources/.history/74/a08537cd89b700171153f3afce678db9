@@ -1,8 +1,0 @@
-package custom.objects;
-
-import org.eclipse.swt.graphics.Image;
-
-public class SeeFoodImage {
-	private int confidenceLevel = 0;
-	private Image originalImage;
-}

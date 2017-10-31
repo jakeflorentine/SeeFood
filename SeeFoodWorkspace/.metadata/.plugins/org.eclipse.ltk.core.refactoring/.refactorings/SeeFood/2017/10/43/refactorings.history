@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename type &apos;custom.objects.SeeFoodImage&apos; to &apos;SeefoodImage&apos;&#x0A;- Original project: &apos;SeeFood&apos;&#x0A;- Original element: &apos;custom.objects.SeeFoodImage&apos;&#x0A;- Renamed element: &apos;custom.objects.SeefoodImage&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;SeeFoodImage&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;custom.objects{SeeFoodImage.java[SeeFoodImage" matchStrategy="1" name="SeefoodImage" qualified="false" references="true" similarDeclarations="false" stamp="1508718813955" textual="false" version="1.0"/>
-</session>
