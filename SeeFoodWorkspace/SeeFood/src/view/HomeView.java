@@ -10,6 +10,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
+import util.ParserUtil;
+
 public class HomeView extends Composite {
 
 	public HomeView(Composite parent, int style) {
@@ -44,10 +46,20 @@ public class HomeView extends Composite {
 				fd.setText("Select a photo");
 				fd.open();
 				String[] files = fd.getFileNames();
-				String parentPath = fd.getFilterPath();
+				
+				files = ParserUtil.parseFiles(files);
+				
+				if(files.length > 0) {
+					String parentFilePath = fd.getFilterPath();
+					openUploadView(parentFilePath, files);
+					// b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
 
-				openUploadView(parentPath, files);
+					for (String s : files) {
+						System.out.println(s);
 
+						// ci.setBackgroundImage(new Image(ci.getDisplay(), s));
+					}
+				}
 			}
 
 		});

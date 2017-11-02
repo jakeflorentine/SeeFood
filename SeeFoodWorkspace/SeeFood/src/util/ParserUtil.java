@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
 
 public class ParserUtil {
 
@@ -20,13 +21,24 @@ public class ParserUtil {
 				invalidFiles.add(filename);
 			}
 		}
+		
+		if(!invalidFiles.isEmpty()) {
+			MessageBox dialog =
+				    new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_WARNING | SWT.OK);
+				dialog.setText("Invalid files selected");
+				dialog.setMessage("The following files are unsupported and will not be analyzed:\n" +
+								  String.join(", ", invalidFiles));
+				
+			// open dialog and await user selection
+			int returnCode = dialog.open();
+		}
 
-		return (String[]) validFiles.toArray();
+		return validFiles.toArray(new String[validFiles.size()]);
 	}
 
 	private static boolean isValid(String filename) {
 		List<String> filetypes = new ArrayList<>(Arrays.asList("jpg", "jpeg", "bmp", "png"));
-		String extension = filename.substring(filename.lastIndexOf('.'));
+		String extension = filename.substring(filename.lastIndexOf('.') + 1);
 		return filetypes.contains(extension.toLowerCase());
 //		try {
 //			Image image = new Image(Display.getCurrent(), filename);
