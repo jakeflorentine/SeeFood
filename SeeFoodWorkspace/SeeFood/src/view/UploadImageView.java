@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
 import util.ImageUtil;
+import util.ParserUtil;
 
 public class UploadImageView extends Composite {
 	private Composite imageComp;
@@ -72,6 +73,10 @@ public class UploadImageView extends Composite {
 				fd.setText("Select a photo");
 				fd.open();
 				String[] files = fd.getFileNames();
+
+				// parse all files read in from user selection
+				files = ParserUtil.parseFiles(files);
+
 				String parentFilePath = fd.getFilterPath();
 				displayImages(parentFilePath, files);
 				// b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
