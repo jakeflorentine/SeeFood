@@ -23,6 +23,7 @@ public class GalleryView extends Composite {
 	private ScrolledComposite photoGrid;
 	private TabFolder filter;
 	private Image img = new Image(Display.getCurrent(), "/Users/jakeflorentine/git/CEG-SeeFoodAI/fries.jpg");
+	private Image img2 = new Image(Display.getCurrent(), "/Users/jakeflorentine/git/CEG-SeeFoodAI/samples/poodle.png");
 
 	public GalleryView(Composite parent, int style) {
 		super(parent, style);
@@ -54,6 +55,8 @@ public class GalleryView extends Composite {
 		notFood.setText("Not Food");
 		notFood.setControl(getFilterControl());
 
+		testFill((ScrolledComposite) food.getControl());
+
 		filter.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -61,40 +64,28 @@ public class GalleryView extends Composite {
 				if (photoGrid != null) {
 					photoGrid.dispose();
 				}
-				testFill((Composite) filter.getSelection()[0].getControl());
+				testFill((ScrolledComposite) filter.getSelection()[0].getControl());
 				System.out.println("Selection");
 				// setPhotoGridData();
 				// fillPhotoGrid();
-				for (int i = 0; i < 12; i++) {
-					testFill((Composite) filter.getSelection()[0].getControl());
-				}
+
+				testFill((ScrolledComposite) filter.getSelection()[0].getControl());
 
 			}
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				System.out.println("Selection");
-				for (int i = 0; i < 12; i++) {
-					testFill((Composite) filter.getSelection()[0].getControl());
-				}
+
+				testFill((ScrolledComposite) filter.getSelection()[0].getControl());
 
 			}
 
 		});
 
-		for (int i = 0; i < 12; i++) {
-			testFill((Composite) food.getControl());
-		}
-
-		// ScrolledComposite scrolledComposite = new ScrolledComposite(filter,
-		// SWT.V_SCROLL | SWT.BORDER);
-		// scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true,
-		// 1, 3));
-		// scrolledComposite.setExpandHorizontal(true);
-		// scrolledComposite.setExpandVertical(true);
-		// scrolledComposite.setMinSize(250, 250);
-		//
-		// scrolledComposite.setBackgroundImage(img);
+		// for (int i = 0; i < 12; i++) {
+		// testFill((Composite) food.getControl());
+		// }
 
 		/**
 		 * Each tab should be filled with a scrolled composite which will contain a 3xn
@@ -136,22 +127,30 @@ public class GalleryView extends Composite {
 
 	}
 
-	public void testFill(Composite selectedControl) {
-		// create the composite to display the image
-		Composite imageInScroll = new Composite(selectedControl, SWT.BORDER);
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
-		// // account for the scroll bar when finding the size
-		// int vertBarWidth = scrolledComposite.getVerticalBar().getMaximum();
-		int size = selectedControl.getBounds().width;
-		gd.widthHint = selectedControl.getBounds().width / 3;
-		gd.heightHint = selectedControl.getBounds().width / 3;
-		imageInScroll.setLayoutData(gd);
+	public void testFill(ScrolledComposite selectedControl) {
+		Image image = img;
+		if (filter.getSelectionIndex() == 1) {
+			image = img2;
+		}
+		Composite additionalImageComp = new Composite(selectedControl, SWT.BORDER);
+		additionalImageComp.setLayout(new GridLayout(3, false));
+		additionalImageComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3));
 
-		imageInScroll.setBackgroundImage(img);
+		for (int i = 0; i < 12; i++) {
+			// ScrolledComposite scrolledComposite = (ScrolledComposite) food.getControl();
 
-		// resize the image to fit the composite
-		// Image scaledImage = ImageUtil.resize(img, new Rectangle(0, 0, size, size));
-		// imageInScroll.setBackgroundImage(scaledImage);
+			Composite comp = new Composite(additionalImageComp, SWT.BORDER);
+			GridData g = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
+			int size = selectedControl.getBounds().width / 1;
+			g.heightHint = 200;
+			g.widthHint = 200;
+			comp.setLayoutData(g);
+			Image ii = image;
+			// Image scaledImage = ImageUtil.resize(ii, new Rectangle(0, 0, size, size));
+			comp.setBackgroundImage(ii);
+		}
+		selectedControl.setContent(additionalImageComp);
+		selectedControl.setMinSize(additionalImageComp.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
 	private void fillPhotoGrid() {
@@ -173,9 +172,7 @@ public class GalleryView extends Composite {
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		scrolledComposite.setMinSize(250, 250);
-		scrolledComposite.setLayout(new GridLayout(3, true));
-
-		// scrolledComposite.setBackgroundImage(img);
+		scrolledComposite.setLayout(new GridLayout(1, true));
 
 		return scrolledComposite;
 	}
