@@ -85,24 +85,22 @@ public class UploadImageView extends Composite {
 					System.out.println(s);
 
 					// ci.setBackgroundImage(new Image(ci.getDisplay(), s));
-=======
-				files = ParserUtil.parseFiles(files);
-				
-				if(files.length > 0) {
-					String parentFilePath = fd.getFilterPath();
-					displayImages(parentFilePath, files);
-					// b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
 
-					for (String s : files) {
-						System.out.println(s);
-
-						// ci.setBackgroundImage(new Image(ci.getDisplay(), s));
+					files = ParserUtil.parseFiles(files);
+					
+					if(files.length > 0) {
+						parentFilePath = fd.getFilterPath();
+						displayImages(parentFilePath, files);
+						// b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
+	
+						for (String st : files) {
+							System.out.println(st);
+	
+							// ci.setBackgroundImage(new Image(ci.getDisplay(), s));
+						}
 					}
->>>>>>> 43e55ad4f3ca0721bb5c97692403599a3aedc975
 				}
-
 			}
-
 		});
 		Button gallery = new Button(btnComp, SWT.FLAT | SWT.CENTER);
 		gallery.setText("Gallery");
@@ -114,7 +112,6 @@ public class UploadImageView extends Composite {
 				openGallery();
 			}
 		});
-
 	}
 
 	public void displayImages(String parentFilePath, String[] files) {
@@ -213,5 +210,4 @@ public class UploadImageView extends Composite {
 		this.dispose();
 		ViewUtil.launchGallery(mainComposite, SWT.BORDER);
 	}
-
 }
