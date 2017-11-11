@@ -1,5 +1,8 @@
 package view;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -51,7 +54,12 @@ public class HomeView extends Composite {
 
 				if (files.length > 0) {
 					String parentFilePath = fd.getFilterPath();
-					openUploadView(parentFilePath, files);
+					try {
+						openUploadView(parentFilePath, files);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					// b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
 
 					for (String s : files) {
@@ -79,7 +87,7 @@ public class HomeView extends Composite {
 
 	}
 
-	public void openUploadView(String parentFilePath, String[] files) {
+	public void openUploadView(String parentFilePath, String[] files) throws UnknownHostException, IOException {
 		Composite mainComposite = this.getParent();
 		this.dispose();
 		ViewUtil.launchUploadView(mainComposite, SWT.BORDER, parentFilePath, files);

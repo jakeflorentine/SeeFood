@@ -1,5 +1,8 @@
 package view;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
@@ -40,8 +43,10 @@ public class ViewUtil {
 	 * 
 	 * @param parent
 	 * @param style
+	 * @throws IOException 
+	 * @throws UnknownHostException 
 	 */
-	public static void launchUploadView(Composite parent, int style, String parentFilePath, String[] files) {
+	public static void launchUploadView(Composite parent, int style, String parentFilePath, String[] files) throws UnknownHostException, IOException {
 		uploadImageView = new UploadImageView(parent, style);
 		uploadImageView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
 		parent.layout();

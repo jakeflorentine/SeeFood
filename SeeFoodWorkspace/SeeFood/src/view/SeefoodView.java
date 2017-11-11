@@ -54,7 +54,7 @@ public class SeefoodView {
 		shell.open();
 
 		// establish a connection to the ec2 after the view is created
-		WebServiceUtil.connectToServer();
+		//WebServiceUtil.connectToServer();
 
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {

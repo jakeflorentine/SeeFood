@@ -1,5 +1,11 @@
 package view;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +30,20 @@ public class UploadImageView extends Composite {
 	private Composite imageComp;
 	private ScrolledComposite scrolledComposite;
 	private Composite additionalImageComp;
-
-	public UploadImageView(Composite parent, int style) {
+	private Socket serverSocket;
+	private DataOutputStream dOut;
+	private BufferedReader in;
+	private Socket clientSocket;
+	
+	public UploadImageView(Composite parent, int style) throws UnknownHostException, IOException {
 		super(parent, style);
 		GridLayout gl = new GridLayout(3, true);
 		gl.marginWidth = 50;
 		gl.marginHeight = 25;
 		this.setLayout(gl);
+		
+		serverSocket = new Socket("ec2-54-156-251-225.compute-1.amazonaws.com", 2000);
+		dOut = new DataOutputStream(serverSocket.getOutputStream());
 		createContent(this, SWT.BORDER);
 	}
 
@@ -100,6 +113,8 @@ public class UploadImageView extends Composite {
 						}
 					}
 				}
+				
+				
 			}
 		});
 		Button gallery = new Button(btnComp, SWT.FLAT | SWT.CENTER);
