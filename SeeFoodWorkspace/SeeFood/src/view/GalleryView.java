@@ -1,5 +1,8 @@
 package view;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -109,7 +112,12 @@ public class GalleryView extends Composite {
 				String[] files = fd.getFileNames();
 				String parentPath = fd.getFilterPath();
 
-				openUploadView(parentPath, files);
+				try {
+					openUploadView(parentPath, files);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 
 		});
@@ -160,7 +168,7 @@ public class GalleryView extends Composite {
 		iComp.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1));
 	}
 
-	public void openUploadView(String parentFilePath, String[] files) {
+	public void openUploadView(String parentFilePath, String[] files) throws UnknownHostException, IOException {
 		Composite mainComposite = this.getParent();
 		this.dispose();
 		ViewUtil.launchUploadView(mainComposite, SWT.BORDER, parentFilePath, files);

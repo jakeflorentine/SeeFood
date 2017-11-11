@@ -13,7 +13,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
+import custom.objects.SeefoodImage;
 import util.ParserUtil;
+import util.WebServiceUtil;
 
 public class HomeView extends Composite {
 
@@ -51,9 +53,13 @@ public class HomeView extends Composite {
 				String[] files = fd.getFileNames();
 
 				files = ParserUtil.parseFiles(files);
+				
+				String parentFilePath = fd.getFilterPath();
+				
+				SeefoodImage[] results = WebServiceUtil.getResults(parentFilePath, files);
 
 				if (files.length > 0) {
-					String parentFilePath = fd.getFilterPath();
+					parentFilePath = fd.getFilterPath();
 					try {
 						openUploadView(parentFilePath, files);
 					} catch (IOException e1) {

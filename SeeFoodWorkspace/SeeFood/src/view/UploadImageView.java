@@ -23,17 +23,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
+import custom.objects.SeefoodImage;
 import util.ImageUtil;
 import util.ParserUtil;
+import util.WebServiceUtil;
 
 public class UploadImageView extends Composite {
 	private Composite imageComp;
 	private ScrolledComposite scrolledComposite;
 	private Composite additionalImageComp;
-	private Socket serverSocket;
-	private DataOutputStream dOut;
-	private BufferedReader in;
-	private Socket clientSocket;
 	
 	public UploadImageView(Composite parent, int style) throws UnknownHostException, IOException {
 		super(parent, style);
@@ -41,9 +39,6 @@ public class UploadImageView extends Composite {
 		gl.marginWidth = 50;
 		gl.marginHeight = 25;
 		this.setLayout(gl);
-		
-		serverSocket = new Socket("ec2-54-156-251-225.compute-1.amazonaws.com", 2000);
-		dOut = new DataOutputStream(serverSocket.getOutputStream());
 		createContent(this, SWT.BORDER);
 	}
 
@@ -91,6 +86,9 @@ public class UploadImageView extends Composite {
 				files = ParserUtil.parseFiles(files);
 
 				String parentFilePath = fd.getFilterPath();
+				
+				SeefoodImage[] results = WebServiceUtil.getResults(parentFilePath, files);
+				
 				displayImages(parentFilePath, files);
 				// b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
 
@@ -98,8 +96,6 @@ public class UploadImageView extends Composite {
 					System.out.println(s);
 
 					// ci.setBackgroundImage(new Image(ci.getDisplay(), s));
-
-					files = ParserUtil.parseFiles(files);
 					
 					if(files.length > 0) {
 						parentFilePath = fd.getFilterPath();
@@ -128,6 +124,15 @@ public class UploadImageView extends Composite {
 			}
 		});
 	}
+	
+//	private Image[] makeValidImages(String parentFilePath, String[] files) {
+//		List<Image> imageList = new ArrayList<Image>();
+//		for(String f : files) {
+//			imageList.add(new Image(Display.getCurrent(), parentFilePath + "/" + f));
+//		}
+//		
+//		return imageList.toArray(new Image[files.length]);
+//	}
 
 	public void displayImages(String parentFilePath, String[] files) {
 		List<Image> validImages = new ArrayList<>();
