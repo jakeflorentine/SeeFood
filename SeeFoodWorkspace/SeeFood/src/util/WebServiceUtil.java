@@ -120,6 +120,12 @@ public class WebServiceUtil {
 		            
 		        }
 				results.add(new SeefoodImage(confidence, new Image(Display.getCurrent(), path), isFood));
+				if (isFood==true){
+				System.out.println("seafood has determined that the picture is of food");
+				}
+				else{
+					System.out.println("seafood has determined that the picture is not of food");
+				}
 			}
 			
 			return results.toArray(new SeefoodImage[files.length]);
