@@ -1,11 +1,5 @@
 package view;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,17 +17,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
-import custom.objects.SeefoodImage;
 import util.ImageUtil;
 import util.ParserUtil;
-import util.WebServiceUtil;
 
 public class UploadImageView extends Composite {
 	private Composite imageComp;
 	private ScrolledComposite scrolledComposite;
 	private Composite additionalImageComp;
-	
-	public UploadImageView(Composite parent, int style) throws UnknownHostException, IOException {
+
+	public UploadImageView(Composite parent, int style) {
 		super(parent, style);
 		GridLayout gl = new GridLayout(3, true);
 		gl.marginWidth = 50;
@@ -86,9 +78,6 @@ public class UploadImageView extends Composite {
 				files = ParserUtil.parseFiles(files);
 
 				String parentFilePath = fd.getFilterPath();
-				
-				SeefoodImage[] results = WebServiceUtil.getResults(parentFilePath, files);
-				
 				displayImages(parentFilePath, files);
 				// b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
 
@@ -96,22 +85,23 @@ public class UploadImageView extends Composite {
 					System.out.println(s);
 
 					// ci.setBackgroundImage(new Image(ci.getDisplay(), s));
-					
-					if(files.length > 0) {
+					files = ParserUtil.parseFiles(files);
+
+					if (files.length > 0) {
 						parentFilePath = fd.getFilterPath();
 						displayImages(parentFilePath, files);
 						// b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
-	
+
 						for (String st : files) {
-							System.out.println(st);
-	
+							System.out.println(s);
+
 							// ci.setBackgroundImage(new Image(ci.getDisplay(), s));
 						}
 					}
+
 				}
-				
-				
 			}
+
 		});
 		Button gallery = new Button(btnComp, SWT.FLAT | SWT.CENTER);
 		gallery.setText("Gallery");
@@ -123,16 +113,8 @@ public class UploadImageView extends Composite {
 				openGallery();
 			}
 		});
+
 	}
-	
-//	private Image[] makeValidImages(String parentFilePath, String[] files) {
-//		List<Image> imageList = new ArrayList<Image>();
-//		for(String f : files) {
-//			imageList.add(new Image(Display.getCurrent(), parentFilePath + "/" + f));
-//		}
-//		
-//		return imageList.toArray(new Image[files.length]);
-//	}
 
 	public void displayImages(String parentFilePath, String[] files) {
 		List<Image> validImages = new ArrayList<>();
@@ -230,4 +212,5 @@ public class UploadImageView extends Composite {
 		this.dispose();
 		ViewUtil.launchGallery(mainComposite, SWT.BORDER);
 	}
+
 }

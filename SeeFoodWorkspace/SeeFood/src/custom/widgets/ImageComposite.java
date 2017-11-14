@@ -64,9 +64,8 @@ public class ImageComposite extends Composite {
 			public void paintControl(PaintEvent e) {
 
 				// e.gc.drawLine(20, 40, 40, 40);
-				// e.gc.drawRectangle(0, 0, imageCanvas.getSize().x - 1, imageCanvas.getSize().y
-				// - 1);
-				e.gc.drawImage(getSeefoodImage().getImage(), 0, 0);
+				e.gc.drawRectangle(0, 0, imageCanvas.getSize().x - 1, imageCanvas.getSize().y - 1);
+				e.gc.drawImage(image, 0, 0);
 
 			}
 

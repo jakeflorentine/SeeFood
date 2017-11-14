@@ -43,6 +43,7 @@ public class GalleryView extends Composite {
 	 * @param style
 	 */
 	public void createContent(Composite parent, int style) {
+
 		filter = new TabFolder(parent, style);
 		filter.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 
@@ -58,8 +59,6 @@ public class GalleryView extends Composite {
 		notFood.setText("Not Food");
 		notFood.setControl(getFilterControl());
 
-		testFill((ScrolledComposite) food.getControl());
-
 		filter.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -69,10 +68,8 @@ public class GalleryView extends Composite {
 				}
 				testFill((ScrolledComposite) filter.getSelection()[0].getControl());
 				System.out.println("Selection");
-				// setPhotoGridData();
-				// fillPhotoGrid();
 
-				testFill((ScrolledComposite) filter.getSelection()[0].getControl());
+				// testFill((ScrolledComposite) filter.getSelection()[0].getControl());
 
 			}
 
@@ -121,6 +118,7 @@ public class GalleryView extends Composite {
 			}
 
 		});
+		testFill((ScrolledComposite) food.getControl());
 	}
 
 	private void setPhotoGridData() {
@@ -146,26 +144,29 @@ public class GalleryView extends Composite {
 
 		for (int i = 0; i < 12; i++) {
 			// ScrolledComposite scrolledComposite = (ScrolledComposite) food.getControl();
+			fillPhotoGrid(additionalImageComp);
 
-			Composite comp = new Composite(additionalImageComp, SWT.BORDER);
-			GridData g = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
-			int size = selectedControl.getBounds().width / 1;
-			g.heightHint = 200;
-			g.widthHint = 200;
-			comp.setLayoutData(g);
-			Image ii = image;
-			// Image scaledImage = ImageUtil.resize(ii, new Rectangle(0, 0, size, size));
-			comp.setBackgroundImage(ii);
+			// Composite comp = new Composite(additionalImageComp, SWT.BORDER);
+			// GridData g = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
+			// int size = selectedControl.getBounds().width / 1;
+			// g.heightHint = 200;
+			// g.widthHint = 200;
+			// comp.setLayoutData(g);
+			// Image ii = image;
+			// // Image scaledImage = ImageUtil.resize(ii, new Rectangle(0, 0, size, size));
+			// comp.setBackgroundImage(ii);
 		}
 		selectedControl.setContent(additionalImageComp);
 		selectedControl.setMinSize(additionalImageComp.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
-	private void fillPhotoGrid() {
-		SeefoodImage s = new SeefoodImage(40,
-				new Image(Display.getCurrent(), "/Users/jakeflorentine/git/CEG-SeeFoodAI/fries.jpg"));
-		ImageComposite iComp = new ImageComposite(photoGrid, SWT.NONE, s);
-		iComp.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1));
+	private void fillPhotoGrid(Composite parent) {
+		SeefoodImage s = new SeefoodImage(40, img, false);
+		ImageComposite iComp = new ImageComposite(parent, SWT.NONE, s);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
+		gd.heightHint = 175;
+		gd.widthHint = 175;
+		iComp.setLayoutData(gd);
 	}
 
 	public void openUploadView(String parentFilePath, String[] files) throws UnknownHostException, IOException {
@@ -180,7 +181,6 @@ public class GalleryView extends Composite {
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		scrolledComposite.setMinSize(250, 250);
-		scrolledComposite.setLayout(new GridLayout(1, true));
 
 		return scrolledComposite;
 	}

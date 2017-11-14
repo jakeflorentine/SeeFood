@@ -53,10 +53,13 @@ public class HomeView extends Composite {
 				String[] files = fd.getFileNames();
 
 				files = ParserUtil.parseFiles(files);
-				
+
 				String parentFilePath = fd.getFilterPath();
-				
+
 				SeefoodImage[] results = WebServiceUtil.getResults(parentFilePath, files);
+				for (SeefoodImage si : results) {
+					System.out.println(si.getIsFood());
+				}
 
 				if (files.length > 0) {
 					parentFilePath = fd.getFilterPath();
