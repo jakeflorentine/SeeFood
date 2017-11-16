@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 import org.eclipse.swt.graphics.Image;
@@ -37,9 +36,9 @@ public class WebServiceUtil {
 			String user = "ec2-user";
 			String host = "ec2-54-156-251-225.compute-1.amazonaws.com";
 			int port = 22;
-			File privateKey = new File("/Users/jakeflorentine/Downloads/florentine-ssh.pem");
+			File privateKey = new File("florentine-ssh.pem");
 
-			jsch.addIdentity("/Users/jakeflorentine/Downloads/florentine-ssh.pem");
+			jsch.addIdentity(privateKey.getAbsolutePath());
 			System.out.println("identity added ");
 
 			session = jsch.getSession(user, host, port);
@@ -56,25 +55,7 @@ public class WebServiceUtil {
 
 			session.connect();
 			System.out.println("We have established connection with Amazon EC2.");
-			// the channel is what we will want to use to send commands
 
-			// int exitStatus = channelExec.getExitStatus();
-			// channelExec.disconnect();
-			// session.disconnect();
-			// if(exitStatus < 0){
-			// System.out.println("Done, but exit status not set!");
-			// }
-			// else if(exitStatus > 0){
-			// System.out.println("Done, but with error!");
-			// }
-			// else{
-			// System.out.println("Done!");
-			// }
-
-			// Channel channel=session.openChannel("shell");
-			// channel.setInputStream(System.in);
-			// channel.setOutputStream(System.out);
-			// channel.connect(3*1000);
 			return true;
 		} catch (Exception e) {
 			System.out.println(e);
@@ -105,24 +86,43 @@ public class WebServiceUtil {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 				String line;
 				double confidence = 0;
+				double tensor1 = 0;
+				double tensor2 = 0;
 				boolean isFood = false;
 				while ((line = reader.readLine()) != null) {
 					if (line.startsWith("[[")) {
-						// Skip "[[ " because it breaks shit
+						// remove nonsense from the string
 						line = line.substring(3);
-						sc = new Scanner(line);
-						sc.useLocale(Locale.getDefault());
-						confidence = sc.nextDouble();
-						isFood = reader.readLine().contains("yes");
+						line = line.replace("]]", "");
+						line = line.replace("  ", ",");
+						// get array of values in line
+						String values[] = line.split(",");
+
+						// assign tensor values
+						tensor1 = Double.parseDouble(values[0]);
+						tensor2 = Double.parseDouble(values[1]);
+
+						// tensor1 is greater if the image is of food
+						if (tensor1 > tensor2) {
+							isFood = true;
+						} else {
+							// swap the tensor values in order to get appropriate confidence
+							double tempTens = tensor1;
+							tensor1 = tensor2;
+							tensor2 = tempTens;
+						}
+
+						// decide how confident we are with conclusion
+						confidence = tensor1 - tensor2;
+
 					}
 
 				}
 				results.add(new SeefoodImage(confidence, new Image(Display.getCurrent(), path), isFood));
-				if (isFood==true){
-				System.out.println("seafood has determined that the picture is of food");
-				}
-				else{
-					System.out.println("seafood has determined that the picture is not of food");
+				if (isFood == true) {
+					System.out.println("Seefood has determined that the picture is of food :: " + confidence);
+				} else {
+					System.out.println("Seefood has determined that the picture is not of food :: " + confidence);
 				}
 			}
 
