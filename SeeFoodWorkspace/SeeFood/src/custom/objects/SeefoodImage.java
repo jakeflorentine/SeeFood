@@ -36,4 +36,11 @@ public class SeefoodImage {
 	public boolean getIsFood() {
 		return this.isFood;
 	}
+	
+	public double getConfidencePercentage(double confidence1, double confidence2){
+		double max = Math.max(confidence1, confidence2);
+		double min = Math.min(confidence1, confidence2);
+		double dif = max - min;
+		return dif;
+	}
 }
