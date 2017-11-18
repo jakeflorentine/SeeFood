@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -112,5 +113,12 @@ public class HomeView extends Composite {
 		Composite mainComposite = this.getParent();
 		this.dispose();
 		ViewUtil.launchGallery(mainComposite, SWT.BORDER);
+		try {
+			// NOTE: These come back with the already calculated percentage. The confidence is already parsed for the gallery
+			List<SeefoodImage> list = WebServiceUtil.getImages();
+		}
+		catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
 	}
 }

@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -18,6 +19,7 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
 
 import custom.objects.SeefoodImage;
 
@@ -37,7 +39,7 @@ public class WebServiceUtil {
 			String host = "ec2-54-156-251-225.compute-1.amazonaws.com";
 			int port = 22;
 			File privateKey = new File("florentine-ssh.pem");
-
+			String test = privateKey.getAbsolutePath();
 			jsch.addIdentity(privateKey.getAbsolutePath());
 			System.out.println("identity added ");
 
@@ -128,6 +130,7 @@ public class WebServiceUtil {
 
 			return results.toArray(new SeefoodImage[files.length]);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}
@@ -135,9 +138,45 @@ public class WebServiceUtil {
 	/**
 	 * 
 	 * @return
+	 * @throws SftpException 
 	 */
-	public List<SeefoodImage> getImages() {
-		List<SeefoodImage> images = null;
+	public static List<SeefoodImage> getImages() throws SftpException {
+		List<SeefoodImage> images = new ArrayList<SeefoodImage>();
+		try {
+			channel = session.openChannel("sftp");
+			channel.connect();
+			channelSftp = (ChannelSftp) channel;
+			channelSftp.cd("/home/ec2-user/seefood/CEG4110-Fall2017/Food/");
+			Vector<ChannelSftp.LsEntry> list = channelSftp.ls("*.jpg");
+			File file;
+			for(ChannelSftp.LsEntry entry : list) {
+				String filename = entry.getFilename();
+				String path = "gallery/" + filename;
+			    channelSftp.get(entry.getFilename(), path);
+			    
+			    file = new File(path);
+			    String test = file.getAbsolutePath();
+			    double confidence = Double.parseDouble( filename.substring(filename.lastIndexOf('-') + 1, filename.lastIndexOf('.')));
+			    Image image = new Image(Display.getCurrent(), path);
+			    SeefoodImage sfi = new SeefoodImage(confidence, image, true);
+			    images.add(sfi);
+			}
+			
+			channelSftp.cd("/home/ec2-user/seefood/CEG4110-Fall2017/NotFood/");
+			list = channelSftp.ls("*.jpg");
+			for(ChannelSftp.LsEntry entry : list) {
+				String filename = entry.getFilename();
+				String path = "gallery/" + filename;
+			    channelSftp.get(entry.getFilename(), path);
+			    
+			    file = new File(path);
+			    double confidence = Double.parseDouble( filename.substring(filename.lastIndexOf('-') + 1, filename.lastIndexOf('.')));
+			    Image image = new Image(Display.getCurrent(), file.getAbsolutePath());
+			    SeefoodImage sfi = new SeefoodImage(confidence, image, false);
+			    images.add(sfi);
+			}
+		} catch (Exception e) {}
+		
 
 		return images;
 	}
