@@ -10,9 +10,12 @@ public class ImageUtil {
 	public static String[] filterExtensions = { "*.png", "*.jpg", "*.jpeg" };
 
 	public static Image resize(Image image, Rectangle compBounds) {
+		if (image.isDisposed()) {
+			return null;
+		}
 		System.out.println("Created image.  Width: " + compBounds.width + " Height: " + compBounds.height);
 		Rectangle imageBounds = image.getBounds();
-		int width = 400, height = 424;
+		int width = imageBounds.width, height = imageBounds.height;
 		// check to see whether the image is wider or taller
 		// set the corresponding dimension to the composites'
 		if (imageBounds.width > imageBounds.height) {
@@ -22,6 +25,8 @@ public class ImageUtil {
 			height = compBounds.height;
 			width = getRemainingBound(imageBounds, compBounds, false);
 		}
+
+		// check for image being wider than the parent composite
 
 		Image scaled = new Image(Display.getCurrent(), width, height);
 		GC gc = new GC(scaled);

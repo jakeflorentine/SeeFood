@@ -1,13 +1,11 @@
 package custom.widgets;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import custom.objects.SeefoodImage;
 
@@ -22,10 +20,10 @@ public class ImageComposite extends Composite {
 	 * @param seefoodImage
 	 */
 	public ImageComposite(Composite parent, int style, SeefoodImage seefoodImage) {
-		super(parent, style);
+		super(parent, SWT.BORDER);
 		GridLayout gl = new GridLayout(1, true);
 		this.setLayout(gl);
-
+		System.out.println("Drawing Image 1");
 		setSeefoodImage(seefoodImage);
 
 		createContent(this);
@@ -53,22 +51,36 @@ public class ImageComposite extends Composite {
 	 */
 	private void createContent(Composite parent) {
 		Image image = getSeefoodImage().getImage();
-		Canvas imageCanvas = new Canvas(parent, SWT.NONE);
+		// Canvas imageCanvas = new Canvas(parent, SWT.NONE);
 		GridData gridData = new GridData();
 		gridData.widthHint = image.getBounds().width;
 		gridData.heightHint = image.getBounds().height;
-		imageCanvas.setLayoutData(gridData);
-		imageCanvas.addPaintListener(new PaintListener() {
-
-			@Override
-			public void paintControl(PaintEvent e) {
-
-				// e.gc.drawLine(20, 40, 40, 40);
-				e.gc.drawRectangle(0, 0, imageCanvas.getSize().x - 1, imageCanvas.getSize().y - 1);
-				e.gc.drawImage(image, 0, 0);
-
-			}
-
-		});
+		parent.setBackgroundImage(new Image(Display.getCurrent(), image.getImageData()));
+		// imageCanvas.setLayoutData(gridData);
+		// imageCanvas.setSize(parent.getBounds().width, parent.getBounds().height);
+		// imageCanvas.addPaintListener(new PaintListener() {
+		//
+		// @Override
+		// public void paintControl(PaintEvent e) {
+		// System.out.println("Drawing Image");
+		// // e.gc.drawLine(20, 40, 40, 40);
+		//
+		// // If the image is of food the background of the bar will be green, otherwise
+		// it
+		// // will be red.
+		// Color background = getSeefoodImage().getIsFood() ? new
+		// Color(Display.getCurrent(), 0, 255, 0)
+		// : new Color(Display.getCurrent(), 255, 0, 0);
+		// // set the backr=ground color
+		// e.gc.setBackground(background);
+		// // draw the image
+		// e.gc.drawImage(image, 0, 0);
+		// e.gc.drawRectangle(0, 0, imageCanvas.getSize().x - 1, imageCanvas.getSize().y
+		// - 1);
+		//
+		// }
+		//
+		// });
+		// parent.layout();
 	}
 }

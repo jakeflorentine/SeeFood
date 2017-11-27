@@ -140,7 +140,7 @@ public class WebServiceUtil {
 	public static SeefoodImage[] getResults(String parentFilePath, String[] files) {
 		List<SeefoodImage> results = new ArrayList<SeefoodImage>();
 		long t = System.currentTimeMillis();
-		long end = t + 15000;
+		long end = t + 20000;
 
 		try {
 			channel = session.openChannel("sftp");
@@ -210,11 +210,13 @@ public class WebServiceUtil {
 								confidence = getConfidenceLevel(tensor1, tensor2);
 
 							}
+							// create a seefood image using a file path
 							boolean createdImage = results
-									.add(new SeefoodImage(confidence, new Image(Display.getCurrent(), path), isFood));
+									.add(new SeefoodImage(confidence, new File(parentFilePath + "/" + s), isFood));
 
 							if (createdImage) {
-								System.out.println("Created SeeFood Image");
+								System.out.println("Created SeeFood Image | Is Food = " + isFood + "  |  Confidence = "
+										+ confidence);
 							}
 
 							received = true;

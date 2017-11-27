@@ -1,31 +1,48 @@
 package view;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
+import custom.objects.SeefoodImage;
 import util.ImageUtil;
 import util.ParserUtil;
+import util.WebServiceUtil;
 
 public class UploadImageView extends Composite {
 	private Composite imageComp;
 	private ScrolledComposite scrolledComposite;
 	private Composite additionalImageComp;
+	private final int RED = SWT.COLOR_RED;
+	private final int GREEN = SWT.COLOR_GREEN;
+	private boolean mainCompSet = false;
 
-	public UploadImageView(Composite parent, int style) {
+	/**
+	 * 
+	 * @param parent
+	 * @param style
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
+	public UploadImageView(Composite parent, int style) throws UnknownHostException, IOException {
 		super(parent, style);
 		GridLayout gl = new GridLayout(3, true);
 		gl.marginWidth = 50;
@@ -49,6 +66,7 @@ public class UploadImageView extends Composite {
 		scrolledComposite.setMinSize(250, 250);
 
 		imageComp = new Composite(parent, SWT.BORDER);
+		imageComp.setLayout(new GridLayout());
 		imageComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 2));
 
 		Composite btnComp = new Composite(parent, SWT.BORDER);
@@ -78,30 +96,11 @@ public class UploadImageView extends Composite {
 				files = ParserUtil.parseFiles(files);
 
 				String parentFilePath = fd.getFilterPath();
-				displayImages(parentFilePath, files);
-				// b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
 
-				for (String s : files) {
-					System.out.println(s);
+				SeefoodImage[] results = WebServiceUtil.getResults(parentFilePath, files);
+				displaySeefoodImages(results);
 
-					// ci.setBackgroundImage(new Image(ci.getDisplay(), s));
-					files = ParserUtil.parseFiles(files);
-
-					if (files.length > 0) {
-						parentFilePath = fd.getFilterPath();
-						displayImages(parentFilePath, files);
-						// b.setBackgroundImage(new Image(display, parentPath+fd.getFileName()));
-
-						for (String st : files) {
-							System.out.println(s);
-
-							// ci.setBackgroundImage(new Image(ci.getDisplay(), s));
-						}
-					}
-
-				}
 			}
-
 		});
 		Button gallery = new Button(btnComp, SWT.FLAT | SWT.CENTER);
 		gallery.setText("Gallery");
@@ -113,26 +112,18 @@ public class UploadImageView extends Composite {
 				openGallery();
 			}
 		});
-
 	}
 
-	public void displayImages(String parentFilePath, String[] files) {
-		List<Image> validImages = new ArrayList<>();
-		for (String file : files) {
-			try {
-				String fullFilePath = parentFilePath + "/" + file;
-				// need to check if fullFilePath is an image
+	/**
+	 * 
+	 * @param parentFilePath
+	 * @param files
+	 */
+	public void displaySeefoodImages(SeefoodImage[] seefoodImages) {
+		if (seefoodImages == null)
+			return;
+		List<SeefoodImage> validImages = Arrays.asList(seefoodImages);
 
-				Image i = new Image(Display.getCurrent(), fullFilePath);
-				validImages.add(i);
-				// Image scaled = ImageUtil.resize(i, imageComp.getBounds());
-				// // set the composite background to be the scaled image
-				// imageComp.setBackgroundImage(scaled);
-			} catch (Exception e1) {
-				System.out.println("Cannot create image");
-				imageComp.setBackground(new Color(Display.getCurrent(), 255, 0, 0));
-			}
-		}
 		fillImageComp(validImages);
 	}
 
@@ -144,7 +135,7 @@ public class UploadImageView extends Composite {
 	 * @param validImages
 	 *            A list of created images to be displayed
 	 */
-	public void fillImageComp(List<Image> validImages) {
+	public void fillImageComp(List<SeefoodImage> validImages) {
 		// no need to continue if the list is null
 		if (validImages == null) {
 			return;
@@ -155,37 +146,23 @@ public class UploadImageView extends Composite {
 		 * in the scrolled composite. The "additionalImageComp" is the content area of
 		 * the scrolled composite.
 		 */
-		if (validImages.size() > 1) {
-			additionalImageComp = new Composite(scrolledComposite, SWT.BORDER);
-			additionalImageComp.setLayout(new GridLayout(1, false));
-		}
+		additionalImageComp = new Composite(scrolledComposite, SWT.BORDER);
+		additionalImageComp.setLayout(new GridLayout(1, false));
 
 		// boolean variable to aid in checking if the main image has been set
-		boolean mainCompSet = false;
 
-		for (Image image : validImages) {
+		for (SeefoodImage image : validImages) {
 			// if the main image composite is not set fill it with an image
 			if (!mainCompSet) {
-				Image scaled = ImageUtil.resize(image, imageComp.getBounds());
-				// set the composite background to be the scaled image
-				imageComp.setBackgroundImage(scaled);
+
+				addImageCanvas(imageComp, image);
+
 				mainCompSet = true;
 			}
 			// add the remaining images to the scrolled composite
 			else {
-				// create the composite to display the image
-				Composite imageInScroll = new Composite(additionalImageComp, SWT.BORDER);
-				GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
-				// account for the scroll bar when finding the size
-				int vertBarWidth = scrolledComposite.getVerticalBar().getMaximum();
-				int size = scrolledComposite.getBounds().width;
-				gd.widthHint = size;
-				gd.heightHint = size;
-				imageInScroll.setLayoutData(gd);
 
-				// resize the image to fit the composite
-				Image scaledImage = ImageUtil.resize(image, new Rectangle(0, 0, size, size));
-				imageInScroll.setBackgroundImage(scaledImage);
+				addImageCanvas(additionalImageComp, image);
 			}
 
 		}
@@ -201,16 +178,56 @@ public class UploadImageView extends Composite {
 		scrolledComposite.setMinSize(additionalImageComp.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
+	/**
+	 * 
+	 * @param parent
+	 * @param image
+	 */
+	private void addImageCanvas(Composite parent, SeefoodImage image) {
+		Canvas canvas = new Canvas(parent, SWT.NONE);
+
+		canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		// Create a paint handler for the canvas
+		canvas.addPaintListener(new PaintListener() {
+
+			@Override
+			public void paintControl(PaintEvent e) {
+				Font font = new Font(Display.getCurrent(), "Arial", 25, SWT.BOLD | SWT.ITALIC);
+				Rectangle r = canvas.getBounds();
+				Image tempImage = new Image(Display.getCurrent(), image.getImageFile().getAbsolutePath());
+				Image scaled = ImageUtil.resize(tempImage, r);
+				e.gc.drawImage(scaled, 0, 0);
+				if (image.getIsFood()) {
+					e.gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GREEN));
+				} else {
+					e.gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+				}
+				e.gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+				e.gc.drawText(image.toString(), 5, 5);
+				e.gc.setFont(font);
+
+			}
+		});
+
+		parent.layout();
+	}
+
+	/**
+	 * 
+	 */
 	public void openHome() {
 		Composite mainComposite = this.getParent();
 		this.dispose();
 		ViewUtil.launchHomeView(mainComposite, SWT.BORDER);
 	}
 
+	/**
+	 * 
+	 */
 	public void openGallery() {
 		Composite mainComposite = this.getParent();
 		this.dispose();
 		ViewUtil.launchGallery(mainComposite, SWT.BORDER);
 	}
-
 }

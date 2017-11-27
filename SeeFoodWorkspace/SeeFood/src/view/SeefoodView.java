@@ -22,7 +22,6 @@ public class SeefoodView {
 	public static void createContent() {
 		// call a system start
 		Display display = new Display();
-
 		Shell shell = new Shell(display);
 		// the layout manager handle the layout
 		// of the widgets in the container
@@ -54,7 +53,7 @@ public class SeefoodView {
 		shell.open();
 
 		// establish a connection to the ec2 after the view is created
-		 WebServiceUtil.connectToServer();
+		WebServiceUtil.connectToServer();
 
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {

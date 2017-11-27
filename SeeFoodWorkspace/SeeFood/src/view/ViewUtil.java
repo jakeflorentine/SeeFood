@@ -8,6 +8,10 @@ import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
+import custom.objects.SeefoodImage;
+import util.ParserUtil;
+import util.WebServiceUtil;
+
 public class ViewUtil {
 	private static Composite openView = null;
 	private static StackLayout layout = new StackLayout();
@@ -43,10 +47,11 @@ public class ViewUtil {
 	 * 
 	 * @param parent
 	 * @param style
-	 * @throws IOException 
-	 * @throws UnknownHostException 
+	 * @throws IOException
+	 * @throws UnknownHostException
 	 */
-	public static void launchUploadView(Composite parent, int style, String parentFilePath, String[] files) throws UnknownHostException, IOException {
+	public static void launchUploadView(Composite parent, int style, String parentFilePath, String[] files)
+			throws UnknownHostException, IOException {
 		uploadImageView = new UploadImageView(parent, style);
 		uploadImageView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
 		parent.layout();
@@ -62,7 +67,14 @@ public class ViewUtil {
 	 */
 	public static void uploadImages(String parentFilePath, String[] files) {
 		if (parentFilePath != null && files != null) {
-			uploadImageView.displayImages(parentFilePath, files);
+
+			// parse all files read in from user selection
+			files = ParserUtil.parseFiles(files);
+
+			SeefoodImage[] results = WebServiceUtil.getResults(parentFilePath, files);
+			// uploadImageView.displayImages(parentFilePath, files);
+			uploadImageView.displaySeefoodImages(results);
+			// uploadImageView.fillImageComp(Arrays.asList(results));
 		}
 	}
 
