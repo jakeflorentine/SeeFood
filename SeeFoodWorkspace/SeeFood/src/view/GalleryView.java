@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -31,6 +32,12 @@ public class GalleryView extends Composite {
 	private TabFolder filter;
 	private Image img = new Image(Display.getCurrent(), "/Users/jakeflorentine/git/CEG-SeeFoodAI/fries.jpg");
 	private Image img2 = new Image(Display.getCurrent(), "/Users/jakeflorentine/git/CEG-SeeFoodAI/samples/poodle.png");
+	private List<SeefoodImage> allImagesList = new ArrayList<>();
+	private List<SeefoodImage> foodList = new ArrayList<>();
+	private List<SeefoodImage> notFoodList = new ArrayList<>();
+	private TabItem foodTab;
+	private TabItem allImagesTab;
+	private TabItem notFoodTab;
 
 	public GalleryView(Composite parent, int style) {
 		super(parent, style);
@@ -51,17 +58,17 @@ public class GalleryView extends Composite {
 		filter = new TabFolder(parent, style);
 		filter.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 
-		TabItem food = new TabItem(filter, SWT.NONE);
-		food.setText("Food");
-		food.setControl(getFilterControl());
+		foodTab = new TabItem(filter, SWT.NONE);
+		foodTab.setText("Food");
+		foodTab.setControl(getFilterControl());
 
-		TabItem allImages = new TabItem(filter, SWT.BORDER);
-		allImages.setText("All Images");
-		allImages.setControl(getFilterControl());
+		allImagesTab = new TabItem(filter, SWT.BORDER);
+		allImagesTab.setText("All Images");
+		allImagesTab.setControl(getFilterControl());
 
-		TabItem notFood = new TabItem(filter, SWT.NONE);
-		notFood.setText("Not Food");
-		notFood.setControl(getFilterControl());
+		notFoodTab = new TabItem(filter, SWT.NONE);
+		notFoodTab.setText("Not Food");
+		notFoodTab.setControl(getFilterControl());
 
 		filter.addSelectionListener(new SelectionListener() {
 
@@ -96,10 +103,6 @@ public class GalleryView extends Composite {
 
 		});
 
-		// for (int i = 0; i < 12; i++) {
-		// testFill((ScrolledComposite) food.getControl());
-		// }
-
 		/**
 		 * Each tab should be filled with a scrolled composite which will contain a 3xn
 		 * grid
@@ -132,7 +135,11 @@ public class GalleryView extends Composite {
 			}
 
 		});
-		testFill((ScrolledComposite) food.getControl());
+		// this gets all images from the server and sorts into food/not food
+		sortImages();
+
+		// fills the comps
+		testFill((ScrolledComposite) foodTab.getControl());
 	}
 
 	private void setPhotoGridData() {
@@ -147,6 +154,47 @@ public class GalleryView extends Composite {
 
 	}
 
+	/**
+	 * 
+	 * @return seefood image list based on open tab
+	 */
+	private List<SeefoodImage> getCorrectList() {
+		TabItem[] tabItems = filter.getSelection();
+		TabItem openTab = tabItems[0];
+		if (openTab == foodTab) {
+			return foodList;
+		}
+
+		if (openTab == notFoodTab) {
+			return notFoodList;
+		}
+
+		return allImagesList;
+	}
+
+	private void sortImages() {
+		List<SeefoodImage> seefoodImages = null;
+		try {
+			seefoodImages = WebServiceUtil.getImages();
+			allImagesList = seefoodImages;
+		} catch (SftpException e) {
+		}
+
+		// check if images were null
+		if (seefoodImages != null && !seefoodImages.isEmpty()) {
+			System.out.println("Gallery Images reveived");
+		}
+
+		// sort images to food and not food
+		for (SeefoodImage s : seefoodImages) {
+			if (s.getIsFood()) {
+				foodList.add(s);
+			} else {
+				notFoodList.add(s);
+			}
+		}
+	}
+
 	public void testFill(ScrolledComposite selectedControl) {
 		Image image = img;
 		if (filter.getSelectionIndex() == 1) {
@@ -156,23 +204,17 @@ public class GalleryView extends Composite {
 		additionalImageComp.setLayout(new GridLayout(3, false));
 		additionalImageComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3));
 
-		List<SeefoodImage> seefoodImages = null;
-		try {
-			seefoodImages = WebServiceUtil.getImages();
-		} catch (SftpException e) {
-		}
-		if (seefoodImages != null && !seefoodImages.isEmpty()) {
-			System.out.println("---------- Got images");
-		}
-		for (int i = 0; i < 12; i++) {
-			fillPhotoGrid(additionalImageComp);
+		// use the correct list
+		List<SeefoodImage> imageList = getCorrectList();
+
+		for (SeefoodImage seefoodImage : imageList) {
+			fillPhotoGrid(additionalImageComp, seefoodImage);
 		}
 		selectedControl.setContent(additionalImageComp);
 		selectedControl.setMinSize(additionalImageComp.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
-	private void fillPhotoGrid(Composite parent) {
-		SeefoodImage s = new SeefoodImage(40, img, false);
+	private void fillPhotoGrid(Composite parent, SeefoodImage s) {
 		ImageComposite iComp = new ImageComposite(parent, SWT.NONE, s);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		gd.heightHint = 175;
