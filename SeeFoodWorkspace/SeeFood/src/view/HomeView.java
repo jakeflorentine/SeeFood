@@ -57,10 +57,7 @@ public class HomeView extends Composite {
 
 				String parentFilePath = fd.getFilterPath();
 
-				SeefoodImage[] results = WebServiceUtil.getResults(parentFilePath, files);
-				for (SeefoodImage si : results) {
-					System.out.println(si.getIsFood());
-				}
+				// SeefoodImage[] results = WebServiceUtil.getResults(parentFilePath, files);
 
 				if (files.length > 0) {
 					parentFilePath = fd.getFilterPath();
@@ -114,10 +111,10 @@ public class HomeView extends Composite {
 		this.dispose();
 		ViewUtil.launchGallery(mainComposite, SWT.BORDER);
 		try {
-			// NOTE: These come back with the already calculated percentage. The confidence is already parsed for the gallery
+			// NOTE: These come back with the already calculated percentage. The confidence
+			// is already parsed for the gallery
 			List<SeefoodImage> list = WebServiceUtil.getImages();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.print(e.getMessage());
 		}
 	}
