@@ -172,12 +172,15 @@ public class WebServiceUtil {
 					// make in getResults()
 
 					// appending an extra space for testing :: Jake
-					
-					// WINDOWS VERSION
-					out.println( "/home/ec2-user/seefood/CEG4110-Fall2017/" + imagePath);
-					
-					// EVERYTHING ELSE VERSION
-					//out.println( imagePath );
+
+					String osName = System.getProperty("os.name").toLowerCase();
+					if (osName.contains("win")) {
+						// WINDOWS VERSION
+						out.println("/home/ec2-user/seefood/CEG4110-Fall2017/" + imagePath);
+					} else {
+						// EVERYTHING ELSE VERSION
+						out.println(imagePath + " ");
+					}
 
 					boolean received = false;
 					while (System.currentTimeMillis() < end) {
@@ -286,16 +289,16 @@ public class WebServiceUtil {
 		return images;
 	}
 
-//	public static JSONArray createJsonArray(String[][] jsonAsString) {
-//		JSONArray json = new JSONArray();
-//		for (int i = 0; i < jsonAsString.length; i++) {
-//			for (int j = 0; j < jsonAsString[i].length; j++) {
-//				JSONObject jsonObject = new JSONObject();
-//				jsonObject.put("image_name", "some/image/path");
-//				json.add(jsonObject);
-//			}
-//		}
-//		return json;
-//
-//	}
+	// public static JSONArray createJsonArray(String[][] jsonAsString) {
+	// JSONArray json = new JSONArray();
+	// for (int i = 0; i < jsonAsString.length; i++) {
+	// for (int j = 0; j < jsonAsString[i].length; j++) {
+	// JSONObject jsonObject = new JSONObject();
+	// jsonObject.put("image_name", "some/image/path");
+	// json.add(jsonObject);
+	// }
+	// }
+	// return json;
+	//
+	// }
 }
