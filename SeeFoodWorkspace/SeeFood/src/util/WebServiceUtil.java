@@ -107,7 +107,14 @@ public class WebServiceUtil {
 			// remove nonsense from the string
 			response = response.substring(3);
 			response = response.replace("]]", "");
-			response = response.replace("  ", ",");
+			// a response contains 2 spaces if the second number isn't negative, otherwise
+			// we need to account
+			if (response.contains("  ")) {
+				response = response.replace("  ", ",");
+			} else {
+				response = response.replace(" ", ",");
+			}
+
 			// get array of values in line
 			String values[] = response.split(",");
 
@@ -215,6 +222,8 @@ public class WebServiceUtil {
 								// decide how confident we are with conclusion
 								confidence = getConfidenceLevel(tensor1, tensor2);
 
+							} else {
+								System.out.println("strange response " + response.toString());
 							}
 							// create a seefood image using a file path
 							boolean createdImage = results
