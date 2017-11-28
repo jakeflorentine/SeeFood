@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
+import com.jcraft.jsch.SftpException;
+
 import custom.objects.SeefoodImage;
 import custom.widgets.ImageComposite;
 import util.WebServiceUtil;
@@ -27,8 +29,8 @@ public class GalleryView extends Composite {
 	// scrolled composite to be filled with seefood images
 	private ScrolledComposite photoGrid;
 	private TabFolder filter;
-	//private Image img = new Image(Display.getCurrent(), "/Users/jakeflorentine/git/CEG-SeeFoodAI/fries.jpg");
-	//private Image img2 = new Image(Display.getCurrent(), "/Users/jakeflorentine/git/CEG-SeeFoodAI/samples/poodle.png");
+	private Image img = new Image(Display.getCurrent(), "/Users/jakeflorentine/git/CEG-SeeFoodAI/fries.jpg");
+	private Image img2 = new Image(Display.getCurrent(), "/Users/jakeflorentine/git/CEG-SeeFoodAI/samples/poodle.png");
 
 	public GalleryView(Composite parent, int style) {
 		super(parent, style);
@@ -66,19 +68,20 @@ public class GalleryView extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				List<SeefoodImage> results;
-				
+
 				if (photoGrid != null) {
 					photoGrid.dispose();
 				}
 				testFill((ScrolledComposite) filter.getSelection()[0].getControl());
 				System.out.println("Selection");
 				try {
-					// NOTE: These come back with the already calculated percentage. The confidence is already parsed for the gallery
+					// NOTE: These come back with the already calculated percentage. The confidence
+					// is already parsed for the gallery
 					results = WebServiceUtil.getImages();
 				} catch (Exception ex) {
 					System.out.println(ex.getMessage());
 				}
-				
+
 				// testFill((ScrolledComposite) filter.getSelection()[0].getControl());
 
 			}
@@ -94,7 +97,7 @@ public class GalleryView extends Composite {
 		});
 
 		// for (int i = 0; i < 12; i++) {
-		// testFill((Composite) food.getControl());
+		// testFill((ScrolledComposite) food.getControl());
 		// }
 
 		/**
@@ -117,6 +120,7 @@ public class GalleryView extends Composite {
 
 				// get the files
 				String[] files = fd.getFileNames();
+
 				String parentPath = fd.getFilterPath();
 
 				try {
@@ -144,39 +148,36 @@ public class GalleryView extends Composite {
 	}
 
 	public void testFill(ScrolledComposite selectedControl) {
-		//Image image = img;
+		Image image = img;
 		if (filter.getSelectionIndex() == 1) {
-			//image = img2;
+			image = img2;
 		}
 		Composite additionalImageComp = new Composite(selectedControl, SWT.BORDER);
 		additionalImageComp.setLayout(new GridLayout(3, false));
 		additionalImageComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3));
 
+		List<SeefoodImage> seefoodImages = null;
+		try {
+			seefoodImages = WebServiceUtil.getImages();
+		} catch (SftpException e) {
+		}
+		if (seefoodImages != null && !seefoodImages.isEmpty()) {
+			System.out.println("---------- Got images");
+		}
 		for (int i = 0; i < 12; i++) {
-			// ScrolledComposite scrolledComposite = (ScrolledComposite) food.getControl();
 			fillPhotoGrid(additionalImageComp);
-
-			// Composite comp = new Composite(additionalImageComp, SWT.BORDER);
-			// GridData g = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
-			// int size = selectedControl.getBounds().width / 1;
-			// g.heightHint = 200;
-			// g.widthHint = 200;
-			// comp.setLayoutData(g);
-			// Image ii = image;
-			// // Image scaledImage = ImageUtil.resize(ii, new Rectangle(0, 0, size, size));
-			// comp.setBackgroundImage(ii);
 		}
 		selectedControl.setContent(additionalImageComp);
 		selectedControl.setMinSize(additionalImageComp.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
 	private void fillPhotoGrid(Composite parent) {
-		//SeefoodImage s = new SeefoodImage(40, img, false);
-		//ImageComposite iComp = new ImageComposite(parent, SWT.NONE, s);
+		SeefoodImage s = new SeefoodImage(40, img, false);
+		ImageComposite iComp = new ImageComposite(parent, SWT.NONE, s);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		gd.heightHint = 175;
 		gd.widthHint = 175;
-		//iComp.setLayoutData(gd);
+		iComp.setLayoutData(gd);
 	}
 
 	public void openUploadView(String parentFilePath, String[] files) throws UnknownHostException, IOException {
