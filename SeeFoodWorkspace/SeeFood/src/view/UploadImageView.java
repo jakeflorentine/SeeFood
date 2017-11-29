@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class UploadImageView extends Composite {
 	private final int RED = SWT.COLOR_RED;
 	private final int GREEN = SWT.COLOR_GREEN;
 	private boolean mainCompSet = false;
+	private List<SeefoodImage> currentImages = new ArrayList<>();
 
 	/**
 	 * 
@@ -97,7 +99,16 @@ public class UploadImageView extends Composite {
 
 				String parentFilePath = fd.getFilterPath();
 
+				// When adding additional images, this keeps all current images and adds the new
+				// ones after them in the side scroll
 				SeefoodImage[] results = WebServiceUtil.getResults(parentFilePath, files);
+				currentImages.addAll(Arrays.asList(results));
+				results = new SeefoodImage[currentImages.size()];
+				for (int i = 0; i < results.length; i++) {
+					results[i] = currentImages.get(i);
+				}
+
+				// redraw images
 				displaySeefoodImages(results);
 
 			}
@@ -123,6 +134,7 @@ public class UploadImageView extends Composite {
 		if (seefoodImages == null)
 			return;
 		List<SeefoodImage> validImages = Arrays.asList(seefoodImages);
+		currentImages.addAll(validImages);
 
 		fillImageComp(validImages);
 	}
@@ -184,7 +196,12 @@ public class UploadImageView extends Composite {
 	 * @param image
 	 */
 	private void addImageCanvas(Composite parent, SeefoodImage image) {
-		Canvas canvas = new Canvas(parent, SWT.NONE);
+		Composite canvasShell = new Composite(parent, SWT.NONE);
+		canvasShell.setLayout(new GridLayout());
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd.heightHint = 300;
+		canvasShell.setLayoutData(gd);
+		Canvas canvas = new Canvas(canvasShell, SWT.NONE);
 
 		canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
@@ -210,6 +227,7 @@ public class UploadImageView extends Composite {
 			}
 		});
 
+		canvasShell.layout();
 		parent.layout();
 	}
 
