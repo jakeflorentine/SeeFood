@@ -23,7 +23,7 @@ public class SeefoodImage {
 	 * @param isFood
 	 */
 	public SeefoodImage(double confidence, Image image, boolean isFood) {
-		this.confidenceLevel = confidence;
+		setConfidence(confidence);
 		this.originalImage = image;
 		this.isFood = isFood;
 	}
