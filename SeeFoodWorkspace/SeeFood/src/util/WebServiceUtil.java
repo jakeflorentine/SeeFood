@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -145,8 +146,8 @@ public class WebServiceUtil {
 	public static SeefoodImage[] getResults(String parentFilePath, String[] files) {
 		List<SeefoodImage> results = new ArrayList<SeefoodImage>();
 		long t = System.currentTimeMillis();
-		long end = t + 20000;
-
+		long end = t + 20000;		
+		
 		try {
 			channel = session.openChannel("sftp");
 			channel.connect();
@@ -264,7 +265,13 @@ public class WebServiceUtil {
 			channelSftp.cd("/home/ec2-user/seefood/CEG4110-Fall2017/Food/");
 			Vector<ChannelSftp.LsEntry> list = channelSftp.ls("*.jpg");
 			File file;
+			Collections.reverse(list);
+			int total = 0;
+			
 			for (ChannelSftp.LsEntry entry : list) {
+				if(total == 15) {
+					break;
+				}
 				String filename = entry.getFilename();
 				String path = "gallery/" + filename;
 				channelSftp.get(entry.getFilename(), path);
@@ -276,11 +283,17 @@ public class WebServiceUtil {
 				Image image = new Image(Display.getCurrent(), path);
 				SeefoodImage sfi = new SeefoodImage(confidence, image, true);
 				images.add(sfi);
+				total++;
 			}
 
 			channelSftp.cd("/home/ec2-user/seefood/CEG4110-Fall2017/NotFood/");
 			list = channelSftp.ls("*.jpg");
+			Collections.reverse(list);
+			total = 0;
 			for (ChannelSftp.LsEntry entry : list) {
+				if(total == 15) {
+					break;
+				}
 				String filename = entry.getFilename();
 				String path = "gallery/" + filename;
 				channelSftp.get(entry.getFilename(), path);
@@ -291,6 +304,7 @@ public class WebServiceUtil {
 				Image image = new Image(Display.getCurrent(), file.getAbsolutePath());
 				SeefoodImage sfi = new SeefoodImage(confidence, image, false);
 				images.add(sfi);
+				total++;
 			}
 		} catch (Exception e) {
 		}
