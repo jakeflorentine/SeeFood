@@ -1,6 +1,8 @@
 package custom.widgets;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -55,32 +57,24 @@ public class ImageComposite extends Composite {
 		GridData gridData = new GridData();
 		gridData.widthHint = image.getBounds().width;
 		gridData.heightHint = image.getBounds().height;
-		parent.setBackgroundImage(new Image(Display.getCurrent(), image.getImageData()));
-		// imageCanvas.setLayoutData(gridData);
-		// imageCanvas.setSize(parent.getBounds().width, parent.getBounds().height);
-		// imageCanvas.addPaintListener(new PaintListener() {
-		//
-		// @Override
-		// public void paintControl(PaintEvent e) {
-		// System.out.println("Drawing Image");
-		// // e.gc.drawLine(20, 40, 40, 40);
-		//
-		// // If the image is of food the background of the bar will be green, otherwise
-		// it
-		// // will be red.
-		// Color background = getSeefoodImage().getIsFood() ? new
-		// Color(Display.getCurrent(), 0, 255, 0)
-		// : new Color(Display.getCurrent(), 255, 0, 0);
-		// // set the backr=ground color
-		// e.gc.setBackground(background);
-		// // draw the image
-		// e.gc.drawImage(image, 0, 0);
-		// e.gc.drawRectangle(0, 0, imageCanvas.getSize().x - 1, imageCanvas.getSize().y
-		// - 1);
-		//
-		// }
-		//
-		// });
-		// parent.layout();
+
+		Image newImage = new Image(Display.getCurrent(), image.getImageData());
+		GC gc = new GC(newImage);
+		Font font = new Font(Display.getCurrent(), "Arial", 25, SWT.BOLD | SWT.ITALIC);
+		// Image tempImage = new Image(Display.getCurrent(),
+		// image.getImageFile().getAbsolutePath());
+		// Image scaled = ImageUtil.resize(tempImage, r);
+		if (getSeefoodImage().getIsFood()) {
+			gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GREEN));
+		} else {
+			gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+		}
+		gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		gc.drawText(getSeefoodImage().toString(), 5, 5);
+		gc.setFont(font);
+		gc.dispose();
+
+		parent.setBackgroundImage(newImage);
+
 	}
 }
