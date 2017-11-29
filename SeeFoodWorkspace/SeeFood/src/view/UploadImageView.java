@@ -80,8 +80,18 @@ public class UploadImageView extends Composite {
 
 				String[] files = (String[]) event.data;
 
+				if (files == null) {
+					event.detail = DND.DROP_NONE;
+					return;
+				}
+
 				// parse all files read in from user selection
 				files = ParserUtil.parseFiles(files);
+
+				if (files == null) {
+					event.detail = DND.DROP_NONE;
+					return;
+				}
 
 				// String parentFilePath = fd.getFilterPath();
 
