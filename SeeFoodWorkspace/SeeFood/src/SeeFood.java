@@ -23,21 +23,6 @@ public class SeeFood {
 		String swtFileNameArchPart = osArch.contains("64") ? "x64" : "x86";
 		String swtFileName = "swt_" + swtFileNameOsPart + "_" + swtFileNameArchPart + ".jar";
 		System.out.println(swtFileName);
-
-		// try {
-		// URLClassLoader classLoader = (URLClassLoader) getClass().getClassLoader();
-		// Method addUrlMethod = URLClassLoader.class.getDeclaredMethod("addURL",
-		// URL.class);
-		// addUrlMethod.setAccessible(true);
-		//
-		// URL swtFileUrl = new URL("rsrc:" + swtFileName); // I am using Jar-in-Jar
-		// class
-		// // loader which understands this URL; adjust accordingly if you don't
-		// addUrlMethod.invoke(classLoader, swtFileUrl);
-		// } catch (Exception e) {
-		// throw new RuntimeException("Unable to add the SWT jar to the class path:" +
-		// swtFileName, e);
-		// }
 	}
 
 	/**

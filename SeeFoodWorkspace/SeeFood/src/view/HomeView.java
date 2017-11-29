@@ -21,16 +21,16 @@ import util.WebServiceUtil;
 public class HomeView extends Composite {
 
 	public HomeView(Composite parent, int style) {
-		super(parent, SWT.BORDER | SWT.NO_BACKGROUND);
+		super(parent, SWT.NONE | SWT.NO_BACKGROUND);
 		GridLayout gl = new GridLayout(3, true);
 		gl.marginWidth = 50;
 		gl.marginHeight = 25;
 		this.setLayout(gl);
-		createContent(this, SWT.BORDER);
+		createContent(this, SWT.NONE);
 	}
 
 	public void createContent(Composite parent, int style) {
-		Composite btnComp = new Composite(parent, SWT.BORDER | SWT.NO_BACKGROUND);
+		Composite btnComp = new Composite(parent, SWT.NONE);
 		btnComp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 3, 1));
 		btnComp.setLayout(new GridLayout(2, true));
 
