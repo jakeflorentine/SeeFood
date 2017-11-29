@@ -25,7 +25,6 @@ public class ImageComposite extends Composite {
 		super(parent, SWT.BORDER);
 		GridLayout gl = new GridLayout(1, true);
 		this.setLayout(gl);
-		System.out.println("Drawing Image 1");
 		setSeefoodImage(seefoodImage);
 
 		createContent(this);
