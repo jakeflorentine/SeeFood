@@ -28,7 +28,6 @@ public class ViewUtil {
 		homeView = new HomeView(parent, style);
 		homeView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
 		parent.layout();
-		// disposePriorView(homeView);
 	}
 
 	/**
@@ -40,7 +39,6 @@ public class ViewUtil {
 		galleryView = new GalleryView(parent, style);
 		galleryView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3));
 		parent.layout();
-		// disposePriorView(galleryView);
 	}
 
 	/**
@@ -57,7 +55,6 @@ public class ViewUtil {
 		parent.layout();
 
 		uploadImages(parentFilePath, files);
-		// disposePriorView(uploadImageView);
 	}
 
 	/**
