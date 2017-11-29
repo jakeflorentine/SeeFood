@@ -8,6 +8,13 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.FileTransfer;
+import org.eclipse.swt.dnd.ImageTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -50,6 +57,48 @@ public class UploadImageView extends Composite {
 		gl.marginWidth = 50;
 		gl.marginHeight = 25;
 		this.setLayout(gl);
+		DropTarget target = new DropTarget(this, SWT.NONE);
+		final FileTransfer fTransfer = FileTransfer.getInstance();
+		final ImageTransfer iTransfer = ImageTransfer.getInstance();
+		Transfer[] transfers = new Transfer[] { fTransfer, iTransfer };
+		target.setTransfer(transfers);
+		target.addDropListener(new DropTargetAdapter() {
+			@Override
+			public void dropAccept(DropTargetEvent event) {
+
+			}
+
+			@Override
+			public void drop(DropTargetEvent event) {
+				// A drop has occurred, copy over the data
+
+				// no data to copy if either are true
+				if (event.data == null || !(event.data instanceof String[])) {
+					event.detail = DND.DROP_NONE;
+					return;
+				}
+
+				String[] files = (String[]) event.data;
+
+				// parse all files read in from user selection
+				files = ParserUtil.parseFiles(files);
+
+				// String parentFilePath = fd.getFilterPath();
+
+				// When adding additional images, this keeps all current images and adds the new
+				// ones after them in the side scroll
+				SeefoodImage[] results = WebServiceUtil.getResults("", files);
+				currentImages.addAll(Arrays.asList(results));
+				results = new SeefoodImage[currentImages.size()];
+				for (int i = 0; i < results.length; i++) {
+					results[i] = currentImages.get(i);
+				}
+
+				// redraw images
+				displaySeefoodImages(results);
+				System.out.println("image has been dropped" + event.toString()); // data copied to label text
+			}
+		});
 		createContent(this, SWT.BORDER);
 	}
 
