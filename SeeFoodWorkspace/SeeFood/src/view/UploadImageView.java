@@ -152,9 +152,16 @@ public class UploadImageView extends Composite {
 				fd.setText("Select a photo");
 				fd.open();
 				String[] files = fd.getFileNames();
+				if (files == null) {
+					return;
+				}
 
 				// parse all files read in from user selection
 				files = ParserUtil.parseFiles(files);
+
+				if (files == null) {
+					return;
+				}
 
 				String parentFilePath = fd.getFilterPath();
 

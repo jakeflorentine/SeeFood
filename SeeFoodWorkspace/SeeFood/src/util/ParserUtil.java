@@ -19,7 +19,7 @@ public class ParserUtil {
 		}
 
 		if (!invalidFiles.isEmpty()) {
-			return null;
+			System.out.println("Invalid files will not be displayed.");
 		}
 
 		return validFiles.toArray(new String[validFiles.size()]);
