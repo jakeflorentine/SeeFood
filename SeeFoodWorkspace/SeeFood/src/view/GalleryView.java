@@ -30,8 +30,8 @@ public class GalleryView extends Composite {
 	// scrolled composite to be filled with seefood images
 	private ScrolledComposite photoGrid;
 	private TabFolder filter;
-	private Image img = new Image(Display.getCurrent(), "/Users/jakeflorentine/git/CEG-SeeFoodAI/fries.jpg");
-	private Image img2 = new Image(Display.getCurrent(), "/Users/jakeflorentine/git/CEG-SeeFoodAI/samples/poodle.png");
+	private Image img = null;
+	private Image img2 = null;
 	private List<SeefoodImage> allImagesList = new ArrayList<>();
 	private List<SeefoodImage> foodList = new ArrayList<>();
 	private List<SeefoodImage> notFoodList = new ArrayList<>();
